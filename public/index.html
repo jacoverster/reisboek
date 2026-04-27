@@ -1481,6 +1481,12 @@
     }
 
     function syncStoryLayout(isOpen) {
+      if (!isOpen) {
+        resetVideo(storyVideo);
+        storyVideo.hidden = true;
+        storyImageButton.hidden = false;
+        storyImage.hidden = false;
+      }
       storyCard.hidden = !isOpen;
       mapPanel.classList.toggle("has-story", isOpen);
       requestAnimationFrame(() => map.invalidateSize());

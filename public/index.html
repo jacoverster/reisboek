@@ -333,7 +333,47 @@
         linear-gradient(135deg, rgba(196, 93, 60, 0.28), rgba(34, 85, 78, 0.24));
     }
 
-    .story-image img {
+    .story-image-nav {
+      position: absolute;
+      top: 50%;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      background: rgba(255, 251, 245, 0.22);
+      color: rgba(255, 251, 245, 0.96);
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: background-color 160ms ease, transform 160ms ease, opacity 160ms ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .story-image-nav:hover,
+    .story-image-nav:focus-visible {
+      background: rgba(255, 251, 245, 0.34);
+      transform: translateY(calc(-50% - 1px));
+    }
+
+    .story-image-nav:disabled {
+      opacity: 0.4;
+      cursor: default;
+      transform: translateY(-50%);
+    }
+
+    .story-image-nav.prev {
+      left: 26px;
+    }
+
+    .story-image-nav.next {
+      right: 26px;
+    }
+
+    .story-image img,
+    .story-image video {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -341,7 +381,33 @@
       display: block;
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.18);
-      pointer-events: none;
+    }
+
+    .story-image img {
+      cursor: zoom-in;
+    }
+
+    .story-image-button {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: zoom-in;
+    }
+
+    .story-image-button[hidden],
+    .story-inline-video[hidden],
+    .lightbox-media img[hidden],
+    .lightbox-media video[hidden] {
+      display: none;
+    }
+
+    .story-image-button:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 4px;
+      border-radius: 20px;
     }
 
     .story-close {
@@ -404,27 +470,6 @@
       border-top: 1px solid rgba(31, 53, 39, 0.08);
     }
 
-    .gallery-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .gallery-controls button {
-      width: 38px;
-      height: 38px;
-      border: 1px solid rgba(31, 53, 39, 0.14);
-      border-radius: 50%;
-      background: var(--surface-strong);
-      color: var(--ink);
-      cursor: pointer;
-    }
-
-    .gallery-controls button:disabled {
-      opacity: 0.38;
-      cursor: default;
-    }
-
     .story-counter {
       font-size: 0.86rem;
       color: var(--muted);
@@ -459,6 +504,143 @@
     .story-next:disabled {
       opacity: 0.4;
       cursor: default;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background: rgba(18, 17, 15, 0.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      width: min(1120px, 100%);
+      max-height: min(92vh, 920px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .lightbox-frame {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+      width: min(960px, 100%);
+    }
+
+    .lightbox-media {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: min(72vh, 760px);
+      padding: 18px 84px;
+      border-radius: 24px;
+      background: rgba(255, 251, 245, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+    }
+
+    .lightbox-media img,
+    .lightbox-media video {
+      display: block;
+      width: 100%;
+      max-height: min(68vh, 700px);
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .lightbox-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(255, 251, 245, 0.92);
+    }
+
+    .lightbox-meta strong {
+      display: block;
+      font-family: "Fraunces", serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .lightbox-meta span {
+      color: rgba(255, 251, 245, 0.72);
+      font-size: 0.92rem;
+    }
+
+    .lightbox-counter {
+      white-space: nowrap;
+      font-size: 0.92rem;
+      color: rgba(255, 251, 245, 0.76);
+    }
+
+    .lightbox-nav,
+    .lightbox-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 50%;
+      background: rgba(255, 251, 245, 0.12);
+      color: rgba(255, 251, 245, 0.96);
+      cursor: pointer;
+      transition: background-color 160ms ease, transform 160ms ease, opacity 160ms ease;
+    }
+
+    .lightbox-nav:hover,
+    .lightbox-nav:focus-visible,
+    .lightbox-close:hover,
+    .lightbox-close:focus-visible {
+      background: rgba(255, 251, 245, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .lightbox-nav:disabled {
+      opacity: 0.4;
+      cursor: default;
+      transform: none;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .lightbox-nav:hover,
+    .lightbox-nav:focus-visible {
+      transform: translateY(calc(-50% - 1px));
+    }
+
+    .lightbox-nav.prev {
+      left: 16px;
+    }
+
+    .lightbox-nav.next {
+      right: 16px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
     }
 
     .info-grid {
@@ -711,6 +893,14 @@
           "body"
           "footer";
       }
+
+      .story-image-nav.prev {
+        left: 16px;
+      }
+
+      .story-image-nav.next {
+        right: 16px;
+      }
     }
 
     @media (max-width: 560px) {
@@ -732,6 +922,10 @@
         align-items: stretch;
       }
 
+      .story-counter {
+        text-align: center;
+      }
+
       .story-link {
         width: 100%;
       }
@@ -742,6 +936,50 @@
 
       .stop-pill-arrow {
         margin-top: 2px;
+      }
+
+      .lightbox {
+        padding: 16px;
+      }
+
+      .lightbox-dialog {
+        width: 100%;
+      }
+
+      .lightbox-frame {
+        width: 100%;
+      }
+
+      .lightbox-media {
+        min-height: min(62vh, 540px);
+        padding: 12px 68px;
+      }
+
+      .lightbox-media img {
+        max-height: min(56vh, 500px);
+      }
+
+      .lightbox-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .lightbox-nav {
+        width: 52px;
+        height: 52px;
+      }
+
+      .lightbox-nav.prev {
+        left: 8px;
+      }
+
+      .lightbox-nav.next {
+        right: 8px;
+      }
+
+      .lightbox-close {
+        top: 10px;
+        right: 10px;
       }
     }
   </style>
@@ -755,7 +993,7 @@
           <h1>Volg die Versterre op reis.</h1>
           <p>
             Sien ons roete deur Switserland en Frankryk, ontdek die stories agter elke stop, 
-            en beleef die reis saam met ons deur foto's, herinneringe, en 'n kaart wat alles verbind. 
+            en beleef die reis saam met ons deur foto's, video's, herinneringe, en 'n kaart wat alles verbind. 
           </p>
         </div>
         <div class="hero-stats" id="heroStats">
@@ -765,7 +1003,7 @@
           </div>
           <div class="stat">
             <strong id="statPhotos">0</strong>
-            <span>Fotos</span>
+            <span>Media</span>
           </div>
           <div class="stat">
             <strong id="statCountries">0</strong>
@@ -797,7 +1035,12 @@
 
       <aside class="story-card" id="storyCard" hidden aria-live="polite">
         <div class="story-image">
-          <img id="storyImage" alt="">
+          <button type="button" class="story-image-nav prev" id="prevPhoto" aria-label="Vorige foto">←</button>
+          <button type="button" class="story-image-button" id="storyImageButton" aria-label="Vergroot foto">
+            <img id="storyImage" alt="">
+          </button>
+          <video class="story-inline-video" id="storyVideo" controls playsinline preload="metadata" hidden></video>
+          <button type="button" class="story-image-nav next" id="nextPhoto" aria-label="Volgende foto">→</button>
           <button type="button" class="story-close" id="storyClose" aria-label="Close stop story">×</button>
         </div>
         <div class="story-meta">
@@ -805,14 +1048,10 @@
         </div>
         <div class="story-body">
           <h2 id="storyTitle">Kies 'n stop</h2>
-          <p id="storyDescription">Klik op enige merk op die kaart om die storie, foto's, en beskrywing daarvan te sien.</p>
+          <p id="storyDescription">Klik op enige merk op die kaart om die storie, foto's, video's, en beskrywing daarvan te sien.</p>
         </div>
         <div class="story-footer">
-          <div class="gallery-controls">
-            <button type="button" id="prevPhoto" aria-label="Vorige foto">←</button>
-            <span class="story-counter" id="storyCounter">1 / 1</span>
-            <button type="button" id="nextPhoto" aria-label="Volgende foto">→</button>
-          </div>
+          <span class="story-counter" id="storyCounter">1 / 1</span>
           <div class="story-actions">
             <button type="button" class="story-next story-prev" id="prevStopButton">Vorige stop</button>
             <button type="button" class="story-next" id="nextStopButton">Volgende stop</button>
@@ -831,6 +1070,27 @@
       </article>
     </section>
   </main>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+      <div class="lightbox-frame">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Maak vergroting toe">×</button>
+        <div class="lightbox-media">
+          <button type="button" class="lightbox-nav prev" id="lightboxPrev" aria-label="Vorige foto">←</button>
+          <img id="lightboxImage" alt="">
+          <video id="lightboxVideo" controls playsinline preload="metadata" hidden></video>
+          <button type="button" class="lightbox-nav next" id="lightboxNext" aria-label="Volgende foto">→</button>
+        </div>
+        <div class="lightbox-meta">
+          <div>
+            <strong id="lightboxTitle">Foto</strong>
+            <span id="lightboxSubtitle">Reisstop</span>
+          </div>
+          <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -958,6 +1218,11 @@
           "assets/images/jan2026/chatel_verster_famil.jpg",
           "assets/images/jan2026/chatel_momdad.jpg",
           "assets/images/jan2026/chatel_mom_son_ski.jpg",
+          {
+            src: "assets/images/jan2026/chatel-ski-video.mp4",
+            type: "video",
+            poster: "assets/images/jan2026/chatel_skilift.jpg"
+          },
           "assets/images/jan2026/chatel_skilift.jpg",
           "assets/images/jan2026/chatel_ski_bus.jpg",
           "assets/images/jan2026/chatel_ski_instructor.jpg",
@@ -1017,6 +1282,7 @@
 
     const storyCard = document.getElementById("storyCard");
     const storyImage = document.getElementById("storyImage");
+    const storyVideo = document.getElementById("storyVideo");
     const storyTitle = document.getElementById("storyTitle");
     const storyDescription = document.getElementById("storyDescription");
     const storyDate = document.getElementById("storyDate");
@@ -1025,7 +1291,17 @@
     const prevStopButton = document.getElementById("prevStopButton");
     const prevPhoto = document.getElementById("prevPhoto");
     const nextPhoto = document.getElementById("nextPhoto");
+    const storyImageButton = document.getElementById("storyImageButton");
     const storyClose = document.getElementById("storyClose");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxVideo = document.getElementById("lightboxVideo");
+    const lightboxTitle = document.getElementById("lightboxTitle");
+    const lightboxSubtitle = document.getElementById("lightboxSubtitle");
+    const lightboxCounter = document.getElementById("lightboxCounter");
+    const lightboxPrev = document.getElementById("lightboxPrev");
+    const lightboxNext = document.getElementById("lightboxNext");
+    const lightboxClose = document.getElementById("lightboxClose");
     const mapPanel = document.getElementById("mapPanel");
     const statStops = document.getElementById("statStops");
     const statPhotos = document.getElementById("statPhotos");
@@ -1039,6 +1315,7 @@
     let activeStopId = null;
     let activeGalleryIndex = 0;
     let tileErrorCount = 0;
+    let lastFocusedElement = null;
     const markerElements = new Map();
     const stopFocusZoom = 10;
 
@@ -1102,8 +1379,29 @@
       });
     }
 
+    function getMediaType(source) {
+      return /\.(mp4|webm|mov|m4v|ogg)$/i.test(source) ? "video" : "image";
+    }
+
+    function normalizeMediaItem(item, stop) {
+      if (typeof item === "string") {
+        return {
+          src: item,
+          type: getMediaType(item),
+          poster: stop.thumbnail
+        };
+      }
+
+      return {
+        src: item.src,
+        type: item.type || getMediaType(item.src || ""),
+        poster: item.poster || stop.thumbnail
+      };
+    }
+
     function getGallery(stop) {
-      return stop.gallery && stop.gallery.length ? stop.gallery : [stop.thumbnail];
+      const gallery = stop.gallery && stop.gallery.length ? stop.gallery : [stop.thumbnail];
+      return gallery.map((item) => normalizeMediaItem(item, stop));
     }
 
     function updateMarkerActiveState() {
@@ -1120,6 +1418,50 @@
       };
       imgElement.src = source || fallback;
       imgElement.alt = `${stop.place}, ${stop.country}`;
+    }
+
+    function resetVideo(videoElement) {
+      videoElement.pause();
+      videoElement.removeAttribute("src");
+      videoElement.removeAttribute("poster");
+      videoElement.load();
+    }
+
+    function setVideoSource(videoElement, media, stop) {
+      videoElement.src = media.src;
+      videoElement.poster = media.poster || stop.thumbnail;
+      videoElement.setAttribute("aria-label", `${stop.place}, ${stop.country}`);
+      videoElement.load();
+    }
+
+    function renderStoryMedia(media, stop) {
+      if (media.type === "video") {
+        storyImageButton.hidden = true;
+        storyImage.hidden = true;
+        storyVideo.hidden = false;
+        setVideoSource(storyVideo, media, stop);
+        return;
+      }
+
+      resetVideo(storyVideo);
+      storyVideo.hidden = true;
+      storyImageButton.hidden = false;
+      storyImage.hidden = false;
+      setImageWithFallback(storyImage, media.src, stop);
+    }
+
+    function renderLightboxMedia(media, stop) {
+      if (media.type === "video") {
+        lightboxImage.hidden = true;
+        lightboxVideo.hidden = false;
+        setVideoSource(lightboxVideo, media, stop);
+        return;
+      }
+
+      resetVideo(lightboxVideo);
+      lightboxVideo.hidden = true;
+      lightboxImage.hidden = false;
+      setImageWithFallback(lightboxImage, media.src, stop);
     }
 
     function getNextStop(stopId) {
@@ -1146,7 +1488,7 @@
 
     function updateStoryCard(stop) {
       const gallery = getGallery(stop);
-      const currentImage = gallery[activeGalleryIndex] || stop.thumbnail;
+      const currentMedia = gallery[activeGalleryIndex] || normalizeMediaItem(stop.thumbnail, stop);
       const previousStop = getPreviousStop(stop.id);
       const nextStop = getNextStop(stop.id);
 
@@ -1162,8 +1504,47 @@
       prevStopButton.textContent = "Previous stop";
       nextStopButton.disabled = !nextStop;
       nextStopButton.textContent = "Next stop";
-      setImageWithFallback(storyImage, currentImage, stop);
+      renderStoryMedia(currentMedia, stop);
+      syncLightbox(stop, gallery, currentMedia);
       updateMarkerActiveState();
+    }
+
+    function syncLightbox(stop, gallery = getGallery(stop), currentMedia = gallery[activeGalleryIndex] || normalizeMediaItem(stop.thumbnail, stop)) {
+      if (lightbox.hidden) {
+        return;
+      }
+      lightboxTitle.textContent = stop.place;
+      lightboxSubtitle.textContent = `${stop.date} · ${stop.country}`;
+      lightboxCounter.textContent = `${activeGalleryIndex + 1} / ${gallery.length}`;
+      lightboxPrev.disabled = gallery.length <= 1;
+      lightboxNext.disabled = gallery.length <= 1;
+      renderLightboxMedia(currentMedia, stop);
+    }
+
+    function openLightbox() {
+      const stop = journeyStops.find((item) => item.id === activeStopId);
+      if (!stop) {
+        return;
+      }
+      lastFocusedElement = document.activeElement;
+      lightbox.hidden = false;
+      syncLightbox(stop);
+      lightboxClose.focus();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      if (lightbox.hidden) {
+        return;
+      }
+      resetVideo(lightboxVideo);
+      lightboxVideo.hidden = true;
+      lightboxImage.hidden = false;
+      lightbox.hidden = true;
+      document.body.style.overflow = "";
+      if (lastFocusedElement instanceof HTMLElement) {
+        lastFocusedElement.focus();
+      }
     }
 
     function openStopStory(stop, galleryIndex = 0, flyToMarker = false) {
@@ -1287,26 +1668,41 @@
       openStopStory(nextStop, 0, true);
     });
     storyClose.addEventListener("click", () => {
+      closeLightbox();
       activeStopId = null;
       syncStoryLayout(false);
       updateMarkerActiveState();
     });
 
-    storyImage.addEventListener("click", () => shiftGallery(1));
+    storyImageButton.addEventListener("click", () => openLightbox());
+    lightboxPrev.addEventListener("click", () => shiftGallery(-1));
+    lightboxNext.addEventListener("click", () => shiftGallery(1));
+    lightboxClose.addEventListener("click", () => closeLightbox());
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
 
     document.addEventListener("keydown", (event) => {
-      if (storyCard.hidden) {
+      if (lightbox.hidden && storyCard.hidden) {
         return;
       }
       if (event.key === "Escape") {
+        if (!lightbox.hidden) {
+          closeLightbox();
+          return;
+        }
         activeStopId = null;
         syncStoryLayout(false);
         updateMarkerActiveState();
       }
       if (event.key === "ArrowLeft") {
+        event.preventDefault();
         shiftGallery(-1);
       }
       if (event.key === "ArrowRight") {
+        event.preventDefault();
         shiftGallery(1);
       }
     });
